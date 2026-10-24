@@ -1,0 +1,189 @@
+
+{
+  "layer": "top",
+  "position": "top",
+  "exclusive": true,
+  "passthrough": false,
+  "fixed-center": true,
+  "ipc": true,
+  "margin-top": 10,
+  "margin-left": 14,
+  "margin-right": 14,
+  "height": 48,
+  "spacing": 5,
+
+  "modules-left": [
+    "custom/launcher",
+    "niri/workspaces",
+    "niri/window",
+    "network",
+    "bluetooth",
+    "pulseaudio"
+  ],
+
+  "modules-center": [
+    "clock"
+  ],
+
+  "modules-right": [
+    "cpu",
+    "memory",
+    "temperature",
+    "custom/ip",
+    "battery",
+    "tray",
+    "custom/power"
+  ],
+
+  "custom/launcher": {
+    "format": "󰣇",
+    "tooltip": false,
+    "on-click": "wofi --show drun",
+    "on-click-right": "wofi --show run"
+  },
+
+  "niri/workspaces": {
+    "format": "{icon}",
+    "format-icons": {
+      "1": "󰲠",
+      "2": "󰲢",
+      "3": "󰲤",
+      "4": "󰲦",
+      "5": "󰲨",
+      "6": "󰲪",
+      "7": "󰲬",
+      "8": "󰲮",
+      "9": "󰲰",
+      "active": "󰮯",
+      "default": "󰊠"
+    },
+    "disable-scroll": false,
+    "all-outputs": false
+  },
+
+  "niri/window": {
+    "format": "󰣆  {}",
+    "max-length": 30,
+    "separate-outputs": true
+  },
+
+  "network": {
+    "format-wifi": "󰤨  {signalStrength}%",
+    "format-ethernet": "󰈀  {ipaddr}",
+    "format-disconnected": "󰤭",
+    "tooltip-format-wifi": "{essid}\nSignal: {signalStrength}%\nIP: {ipaddr}",
+    "tooltip-format-ethernet": "{ifname}\n{ipaddr}",
+    "tooltip-format-disconnected": "Wi-Fi disconnected",
+    "interval": 5,
+    "on-click": "~/.config/waybar/scripts/wifi-menu",
+    "on-click-right": "nm-connection-editor"
+  },
+
+  "bluetooth": {
+    "format": "󰂯",
+    "format-disabled": "󰂲",
+    "format-off": "󰂲",
+    "format-connected": "󰂱 {num_connections}",
+    "tooltip-format": "{controller_alias}\n{status}",
+    "on-click": "blueman-manager",
+    "on-click-right": "bluetoothctl power off"
+  },
+
+
+  "pulseaudio": {
+      "format": "{icon} {volume}%",
+      "format-muted": "󰖁 Muted",
+      "format-icons": {
+          "default": ["󰕿", "󰖀", "󰕾"]
+      },
+      "scroll-step": 5,
+      "on-click": "pavucontrol",
+      "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+      "on-scroll-up": "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+",
+      "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",
+      "smooth-scrolling-threshold": 5
+  },
+
+
+
+
+  "clock": {
+      "format": "{:%H:%M:%S}",
+      "interval": 1
+  },
+
+  "cpu": {
+    "interval": 2,
+    "format": "󰻠  {usage}%",
+    "states": {
+      "warning": 65,
+      "critical": 90
+    },
+    "on-click": "kitty -e btop"
+  },
+
+  "memory": {
+    "interval": 5,
+    "format": "󰍛  {percentage}%",
+    "format-alt": "󰍛  {used:0.1f}G",
+    "states": {
+      "warning": 75,
+      "critical": 90
+    },
+    "on-click": "kitty -e btop"
+  },
+
+  "temperature": {
+    "critical-threshold": 85,
+    "interval": 5,
+    "format": "  {temperatureC}°C",
+    "format-critical": "  {temperatureC}°C",
+    "tooltip": true
+  },
+
+  "custom/ip": {
+    "exec": "ip -4 route get 1.1.1.1 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i==\"src\") {print $(i+1); exit}}'",
+    "interval": 10,
+    "format": "󰩟  {}",
+    "tooltip": true,
+    "on-click": "sh -c 'ip -br address | wofi --dmenu --prompt \"Network interfaces\"'"
+  },
+
+  "battery": {
+    "interval": 10,
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon} {capacity}%",
+    "format-charging": "󰂄 {capacity}%",
+    "format-plugged": "󰚥 {capacity}%",
+    "format-alt": "{time} {icon}",
+    "format-icons": [
+      "󰂎",
+      "󰁺",
+      "󰁻",
+      "󰁼",
+      "󰁽",
+      "󰁾",
+      "󰁿",
+      "󰂀",
+      "󰂁",
+      "󰂂",
+      "󰁹"
+    ],
+    "tooltip-format": "{timeTo} remaining"
+  },
+
+  "tray": {
+    "icon-size": 16,
+    "spacing": 8
+  },
+
+  "custom/power": {
+    "format": "󰐥",
+    "tooltip": true,
+    "tooltip-format": "Power menu",
+    "on-click": "~/.config/waybar/scripts/power-menu"
+  }
+}

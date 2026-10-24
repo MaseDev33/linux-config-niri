@@ -1,0 +1,45 @@
+
+#!/usr/bin/env bash
+
+set -u
+
+command -v nmcli >/dev/null || exit 1
+command -v wofi >/dev/null || exit 1
+
+nmcli radio wifi on
+nmcli device wifi rescan 2>/dev/null || true
+sleep 1
+
+mapfile -t networks < <(
+    nmcli -t -f IN-USE,SSID,SIGNAL,SECURITY device wifi list |
+    awk -F: '{
+        ssid = $2
+        if (ssid == "") ssid = "[Hidden network]"
+        mark = ($1 == "*") ? "● " : "○ "
+        printf "%s%s  (%s%%)  [%s]\n", mark, ssid, $3, $4
+    }' |
+    awk '!seen[$0]++'
+)
+
+((${#networks[@]})) || {
+    notify-send "Wi-Fi" "No networks found"
+    exit 1
+}
+
+choice=$(printf '%s\n' "${networks[@]}" |
+    wofi --dmenu --prompt "Wi-Fi networks" \
+         --width 440 --height 400) || exit 0
+
+[[ -n "$choice" ]] || exit 0
+
+ssid="${choice#??}"
+ssid="${ssid%  (*}"
+
+if [[ "$ssid" == "[Hidden network]" ]]; then
+    ssid=$(printf '' | wofi --dmenu --prompt "Enter hidden SSID") || exit 0
+fi
+
+[[ -n "$ssid" ]] || exit 0
+
+nmcli --wait 20 device wifi connect "$ssid" &&
+    notify-send "Wi-Fi" "Connected to $ssid"

@@ -1,0 +1,35 @@
+
+#!/usr/bin/env bash
+
+choice=$(printf '%s\n' \
+    '󰌾  Lock' \
+    '󰤄  Suspend' \
+    '󰍃  Log out' \
+    '󰜉  Reboot' \
+    '󰐥  Shut down' |
+    wofi --dmenu --prompt "Power menu" \
+         --width 300 --height 300) || exit 0
+
+case "$choice" in
+    *Lock)
+        if command -v swaylock >/dev/null; then
+            swaylock
+        elif command -v gtklock >/dev/null; then
+            gtklock
+        else
+            notify-send "Power menu" "Install swaylock or gtklock"
+        fi
+        ;;
+    *Suspend)
+        systemctl suspend
+        ;;
+    *"Log out")
+        niri msg action quit
+        ;;
+    *Reboot)
+        systemctl reboot
+        ;;
+    *"Shut down")
+        systemctl poweroff
+        ;;
+esac
