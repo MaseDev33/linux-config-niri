@@ -291,10 +291,10 @@ spawn-at-startup "swaybg" "-i" "/home/mason/Pictures/blue_bg.jpg" "-m" "fill"
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
 
-hotkey-overlay {
+// hotkey-overlay {
     // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
     // skip-at-startup
-}
+// }
 
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.
 // If the client will specifically ask for CSD, the request will be honored.
@@ -379,6 +379,9 @@ binds {
     Mod+T { spawn "alacritty"; }
 
     // Quit Niri
+    Mod+L { quit; }
+ 
+    // Quit Window
     Mod+X { close-window; }
 
     // Focus left and right
