@@ -286,7 +286,8 @@ layout {
 
 // This line starts waybar, a commonly used bar for Wayland compositors.
 spawn-at-startup "waybar"
-spawn-at-startup "swaybg" "-i" "/home/mason/Pictures/blue_bg.jpg" "-m" "fill"
+spawn-at-startup "swaybg" "-i" "/home/mason/Pictures/blue_bg2.jpg" "-m" "fill"
+spawn-at-startup "gnome-keyring-daemon" "--start" "--components=secrets"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
